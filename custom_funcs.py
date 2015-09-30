@@ -48,7 +48,7 @@ def read_data(handle, n_data_cols):
 def clean_data(data, feat_cols, consensus_map):
     """
     Cleans the data by:
-    - imputing consensus amino acids
+    - imputing consensus amino acids into the sequence.
     - removing sequences with deletions (may be biologically relevant though)
     - removing sequences with ambiguous sequences (tough to deal with).
     
@@ -298,7 +298,9 @@ def scatterplot_results(Y_preds, Y_test, mse, r2, drug_abbr, model_abbr, figsize
     plt.annotate(s='mse: {0} '.format(mse_fmt), xy=(0.98,0.02), xycoords='axes fraction', ha='right', va='bottom')
     plt.annotate(s=' r-sq: {0}'.format(rsq_fmt), xy=(0.02,0.98), xycoords='axes fraction', ha='left', va='top')
     plt.plot(x_equals_y(Y_test), x_equals_y(Y_test), color='red')
-    plt.show()
+    # plt.show()
+    
+    return fig
     
 def barplot_feature_importances(model, drug_abbr, model_abbr, figsize=None):
     """
