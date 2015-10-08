@@ -320,7 +320,8 @@ def barplot_feature_importances(model, drug_abbr, model_abbr, figsize=None):
     plt.xlabel('Feature')
     plt.ylabel('Relative Importance')
     plt.title('{0} {1}'.format(drug_abbr, model_abbr))
-    plt.show()
+    
+    return fig
     
 def extract_mutational_importance(model, X_test):
     """
