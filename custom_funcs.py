@@ -67,16 +67,14 @@ def clean_data(data, feat_cols, consensus_map):
         # Replace '-' with the consensus letter.
         data[col] = data[col].replace({'-':consensus_map[i+1]})
 
-        # Replace '.' with np.nan
-        data[col] = data[col].replace({'.':np.nan})
-
-        # Replace 'X' with np.nan
-        data[col] = data[col].replace({'X':np.nan})
+    data = data.replace({'X':np.nan})
+    data = data.replace({'.':np.nan})
         
     # Drop any feat_cols that have np.nan inside them. We don't want low quality sequences.
     data.dropna(inplace=True, subset=feat_cols)
+    
     return data
-
+    
 def read_consensus(handle):
     """
     Reads in the consensus sequence.
@@ -216,6 +214,7 @@ def binarize_seqfeature(X):
         else:
             for i,c in enumerate(lb.classes_):
                 binarized[col + '_' + c] = binarized_cols[:,i]
+        binarizers[col] = lb
                 
     return binarized, binarizers
 
