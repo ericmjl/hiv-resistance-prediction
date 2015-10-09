@@ -131,23 +131,23 @@ def drop_conserved_cols(data, feat_cols, nonconserved_cols):
             new_data.drop(col, axis=1, inplace=True)
     return new_data
 
-def drop_ambiguous_sequences(data, nonconserved_cols):
+def drop_ambiguous_sequences(data, feat_cols):
     """
     Imputes np.nan inside each of the positions where the sequences are ambiguous (i.e. has two or more letters).
     
     Parameters:
     ===========
     - data:                 (pandas DataFrame) the sequence feature matrix with drug resistance data.
-    - nonconserved_cols:    (list) the columns that are not conserved.
+    - feat_cols:    (list) the columns that are not conserved.
     
     Returns:
     ========
     - new_data:    (pandas DataFrame) the sequence feature matrix with ambiguous sequences removed.
     """
     new_data = data.copy()
-    for col in nonconserved_cols:
+    for col in feat_cols:
         new_data[col] = data[col].apply(lambda x: np.nan if len(str(x)) > 1 else x)
-    new_data.dropna(inplace=True)
+    new_data.dropna(inplace=True, subset=feat_cols)
     
     return new_data
 
@@ -168,7 +168,7 @@ def x_equals_y(y_test):
     x_eq_y = np.arange(floor-1, ceil+1)
     return x_eq_y
 
-def split_data_xy(data, nonconserved_cols, drug_abbr, log_transform=True):
+def split_data_xy(data, feat_cols, drug_abbr, log_transform=True):
     """
     Splits the data into X and Y matrices.
     
@@ -183,12 +183,16 @@ def split_data_xy(data, nonconserved_cols, drug_abbr, log_transform=True):
     ========
     - X, Y: (pandas DataFrame)
     """
-    X = data[nonconserved_cols]
+    cols_of_interest = [s for s in feat_cols]
+    cols_of_interest.append(drug_abbr)
+    subset = data[cols_of_interest]
+    subset.dropna(inplace=True)
+    X = subset[feat_cols]
     if log_transform:
         tfm = lambda x:np.log(x)
     else:
         tfm = lambda x:x
-    Y = data[drug_abbr].apply(tfm)
+    Y = subset[drug_abbr].apply(tfm)
     return X, Y
 
 def binarize_seqfeature(X):
