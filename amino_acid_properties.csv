@@ -22,3 +22,4 @@ Tyrosine,Y,-1.3,5.65,181.1894
 Apartic acid or asparagine,B,-3.5,4.14,132.6108
 Glutamic acid or glutamine,Z,-3.5,4.435,146.6375
 Any,X,-0.763636364,5.907954545,137.1484182
+Stop,*,0,7,0
